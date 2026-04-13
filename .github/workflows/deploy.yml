@@ -8,18 +8,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup SSH key
+      - name: Deploy via SSH
+        env:
+          KEY: ${{ secrets.EC2_SSH_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to EC2
-        run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-            cd ~/helloworld-app &&
-            git pull origin main &&
-            npm install --production &&
-            pm2 reload helloworld
-          "
+          echo "$KEY" > deploy_key.pem
+          chmod 600 deploy_key.pem
+          ssh -i deploy_key.pem \
+            -o StrictHostKeyChecking=no \
+            -o ConnectTimeout=30 \
+            $USER@$HOST \
+            "cd ~/helloworld-app && git pull origin main && npm install --production && pm2 reload helloworld"
+          rm -f deploy_key.pem
