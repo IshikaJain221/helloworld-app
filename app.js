@@ -6,76 +6,83 @@ app.get('/', (req, res) => {
   <!DOCTYPE html>
   <html>
   <head>
-    <title>My Cool Server</title>
+    <title>My Page</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-      }
-
       body {
-        height: 100vh;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-      }
-
-      .card {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 40px;
-        border-radius: 20px;
+        margin: 0;
+        font-family: 'Verdana';
         text-align: center;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        transition: 0.3s;
-      }
-
-      .card:hover {
-        transform: scale(1.05);
+        transition: 0.5s;
+        background-color: #f5f5f5;
       }
 
       h1 {
-        font-size: 3rem;
-        margin-bottom: 10px;
+        margin-top: 100px;
+        font-size: 40px;
       }
 
-      p {
-        font-size: 1.2rem;
-        opacity: 0.8;
+      .box {
+        margin: 30px auto;
+        padding: 20px;
+        width: 300px;
+        border-radius: 15px;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       }
 
       button {
-        margin-top: 20px;
-        padding: 10px 20px;
+        margin: 10px;
+        padding: 10px 15px;
         border: none;
-        border-radius: 10px;
-        background: white;
-        color: #764ba2;
-        font-weight: bold;
+        border-radius: 8px;
         cursor: pointer;
-        transition: 0.3s;
+        font-size: 16px;
       }
 
-      button:hover {
-        background: #ddd;
+      .happy { background: #ffcc00; }
+      .sad { background: #87ceeb; }
+      .angry { background: #ff6b6b; }
+
+      .emoji {
+        font-size: 50px;
+        margin: 10px;
       }
     </style>
   </head>
   <body>
 
-    <div class="card">
-      <h1>Hello 👋</h1>
-      <p>Welcome to my Express server</p>
-      <button onclick="changeText()">Click Me</button>
+    <h1 id="title">How are you feeling today?</h1>
+
+    <div class="box">
+      <div id="emoji" class="emoji">🙂</div>
+
+      <button class="happy" onclick="setMood('happy')">Happy</button>
+      <button class="sad" onclick="setMood('sad')">Sad</button>
+      <button class="angry" onclick="setMood('angry')">Angry</button>
     </div>
 
     <script>
-      function changeText() {
-        document.querySelector("p").innerText = "You just interacted with my backend-powered UI 😎";
+      function setMood(mood) {
+        let title = document.getElementById("title");
+        let emoji = document.getElementById("emoji");
+
+        if (mood === 'happy') {
+          document.body.style.background = '#fff3b0';
+          title.innerText = "Nice! Keep smiling 😄";
+          emoji.innerText = "😄";
+        }
+
+        if (mood === 'sad') {
+          document.body.style.background = '#d6ecff';
+          title.innerText = "It’s okay. Take it easy 💙";
+          emoji.innerText = "😢";
+        }
+
+        if (mood === 'angry') {
+          document.body.style.background = '#ffd6d6';
+          title.innerText = "Relax… breathe 😤";
+          emoji.innerText = "😠";
+        }
       }
     </script>
 
